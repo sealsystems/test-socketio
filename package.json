@@ -1,0 +1,36 @@
+{
+  "name": "socketio",
+  "version": "0.0.0",
+  "description": "socketio socket demo",
+  "author": {
+    "name": "SEAL Systems AG",
+    "email": "support@sealsystems.de",
+    "url": "http://www.sealsystems.de"
+  },
+  "license": "SEAL End User License",
+  "main": "server.js",
+  "scripts": {
+    "bot": "bot",
+    "release": "bot release && npm publish",
+    "release-minor": "bot release --type minor && npm publish",
+    "release-major": "bot release --type major && npm publish",
+    "test": "bot test-units",
+    "coverage": "istanbul cover _mocha -- --recursive --ui tdd ",
+    "report": "npm run coverage && if [[ $OSTYPE == darwin* ]]; then open=open; else open=xdg-open; fi && $open coverage/lcov-report/index.html"
+  },
+  "dependencies": {
+    "@sealsystems/tlscert": "2.0.1",
+    "socket.io": "2.0.4",
+    "socket.io-client": "2.0.4"
+  },
+  "devDependencies": {
+    "assertthat": "1.0.0",
+    "@sealsystems/eslint-config-es": "1.1.1",
+    "roboter": "0.16.0",
+    "roboter-server": "0.16.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sealsystems/test-socketio.git"
+  }
+}
