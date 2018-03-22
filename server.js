@@ -1,14 +1,16 @@
 'use strict';
 
 /* eslint-disable no-console */
-const socketIO = require('socket.io');
-const tlscert = require('@sealsystems/tlscert');
 const https = require('https');
+
+const socketIO = require('socket.io');
+
+const tlscert = require('@sealsystems/tlscert');
 
 tlscert.get().then((keystore) => {
   const server = https.createServer(keystore).listen(3000);
-
   const io = socketIO(server);
+
   const eventManagement = io.of('/event/management');
 
   eventManagement.on('connection', (socket) => {
@@ -20,7 +22,7 @@ tlscert.get().then((keystore) => {
   });
 
   eventManagement.use((socket, next) => {
-    console.log('##### in middleware');
+    console.log('##### in management middleware');
     next();
   });
 
@@ -32,5 +34,10 @@ tlscert.get().then((keystore) => {
     socket.on('event', (event) => {
       console.log('##### got notification event', JSON.stringify(event, null, 2));
     });
+  });
+
+  eventNotification.use((socket, next) => {
+    console.log('##### in notification middleware');
+    next();
   });
 });

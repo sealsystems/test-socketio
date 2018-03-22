@@ -1,12 +1,10 @@
 'use strict';
 
-/* eslint-disable no-process-env, no-console */
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
+/* eslint-disable no-console */
 const io = require('socket.io-client');
 
-const baseUrl = 'https://localhost:3000';
-const management = io(`${baseUrl}/event/management`);
+const baseUrl = 'https://IntelliJ:3000';
+const management = io(`${baseUrl}/event/management`, { rejectUnauthorized: 0 });
 
 management.on('connect', () => {
   console.log('management event upstream connected to server.');
@@ -14,12 +12,27 @@ management.on('connect', () => {
   management.close();
 });
 
-management.on('error', (errSockio) => {
-  console.log('management error event upstream.', { err: errSockio });
+management.on('connect_error', (err) => {
+  console.log('management connect_error event upstream.', err);
+});
+
+management.on('connect_timeout', (err) => {
+  console.log('management connect_timeout event upstream.', err);
+});
+
+management.on('error', (err) => {
+  console.log('management error event upstream.', err);
 });
 
 management.on('reconnecting', (attempt) => {
-  console.log('management event upstream reconnecting.', { attempt });
+  console.log('management event upstream reconnecting.', attempt);
+});
+
+management.on('reconnect_error', (err) => {
+  console.log('management event upstream reconnect_error', err);
+});
+management.on('reconnect_failed', (err) => {
+  console.log('management event upstream reconnect_failed', err);
 });
 
 const notification = io(`${baseUrl}/event/notification`);
@@ -30,10 +43,10 @@ notification.on('connect', () => {
   notification.close();
 });
 
-notification.on('error', (errSockio) => {
-  console.log('notification error event upstream.', { err: errSockio });
+notification.on('error', (err) => {
+  console.log('notification error event upstream.', err);
 });
 
 notification.on('reconnecting', (attempt) => {
-  console.log('notification event upstream reconnecting.', { attempt });
+  console.log('notification event upstream reconnecting.', attempt);
 });
