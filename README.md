@@ -1,5 +1,7 @@
 # test-socketio
 
+The test is currently not working! I'm still investigation what I'm doing wrong.
+
 To run the test first install node modules
 
 ```bash
